@@ -28,11 +28,16 @@ Route::prefix('user')->group(function () {
         return redirect('/');
     });
 
-    Route::get('profile', function() {
+    Route::group('profile', function () {
         $user = Auth::user();
-        return view('user.profile', [
-            'name' => $user->name,
-            'username' => $user->username,
-        ]);    
-    })->middleware('auth');
+        Route::get('/', function() use ($user) {
+            return view('user.profile', [
+                'name' => $user->name,
+                'username' => $user->username,
+            ]);    
+        }); 
+        Route::get('/update', function() {
+            return view('user.update_profile');
+        });
+    });
 });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('/authenticate', [AuthController::class, 'authenticate']);
     Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::prefix('user', function () {
+    Route::put('/', [UserController::class, 'update']);
 });
