@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::prefix('user')->group(function () {
+    Route::get('/login', function() {
+        if (!Auth::check()) {
+            return view('user.login');
+        } 
+
+        return redirect('/');
+    });
+
+    Route::get('profile', function() {
+        $user = Auth::user();
+        return view('user.profile', [
+            'name' => $user->name,
+            'username' => $user->username,
+        ]);    
+    })->middleware('auth');
 });
