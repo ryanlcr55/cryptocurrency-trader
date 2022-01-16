@@ -28,7 +28,7 @@ Route::prefix('user')->group(function () {
         return redirect('/');
     });
 
-    Route::group('profile', function () {
+    Route::prefix('profile', function () {
         $user = Auth::user();
         Route::get('/', function() use ($user) {
             return view('user.profile', [
