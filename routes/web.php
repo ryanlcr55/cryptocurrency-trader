@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +20,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::prefix('auth')->group(function () {
+    Route::post('/authenticate', [AuthController::class, 'authenticate']);
+    Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
+});
 
 Route::prefix('user')->group(function () {
     Route::get('/login', function() {
@@ -28,16 +34,22 @@ Route::prefix('user')->group(function () {
         return redirect('/');
     });
 
-    Route::prefix('profile', function () {
-        $user = Auth::user();
-        Route::get('/', function() use ($user) {
+    Route::prefix('profile')->middleware('auth')->group(function () {
+        Route::get('/', function() {
+            $user = Auth::user();
             return view('user.profile', [
                 'name' => $user->name,
                 'username' => $user->username,
             ]);    
         }); 
-        Route::get('/update', function() {
-            return view('user.update_profile');
+
+        Route::prefix('update')->group(function () {
+            Route::get('/', function() {
+                return view('user.update_profile');
+            });
+            Route::put('/', [UserController::class, 'update']);
         });
+
     });
+
 });

@@ -10,9 +10,12 @@ class AuthController extends BaseController
 {
     public function authenticate(LoginRequest $request)
     {
-        $credentials = $request->validate();
+        $credentials = $request->all();
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt([
+            'username' => $credentials['username'],
+            'password' => $credentials['password'],
+        ])) {
             $request->session()->regenerate();
 
             return redirect()->intended('user/profile');
@@ -27,6 +30,6 @@ class AuthController extends BaseController
     public function logout()
     {
         Auth::logout();
-        return response();
+        return redirect()->intended('user/login');
     }
 }
