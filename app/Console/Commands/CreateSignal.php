@@ -42,10 +42,11 @@ class CreateSignal extends Command
             $model::create([
                 'detail' => $this->argument('detail'),
             ]);
+            $this->info('ok');
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            $this->error($e->getMessage());
         }
-        
+
         return 0;
     }
 }

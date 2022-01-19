@@ -47,9 +47,9 @@ class CreateUser extends Command
                     'exchange_api_token' => $this->argument('api_key')
                     ]
             );
-            $user = $user->refresh();
+            $this->info('ok');
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            $this->error($e->getMessage());
         }
         return 0;
     }
