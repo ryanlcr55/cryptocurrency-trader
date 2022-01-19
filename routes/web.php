@@ -32,7 +32,7 @@ Route::prefix('user')->group(function () {
         } 
 
         return redirect('/');
-    });
+    })->name('login');
 
     Route::prefix('profile')->middleware('auth')->group(function () {
         Route::get('/', function() {
@@ -45,9 +45,10 @@ Route::prefix('user')->group(function () {
 
         Route::prefix('update')->group(function () {
             Route::get('/', function() {
-                return view('user.update_profile');
+                $user = Auth::user();
+                return view('user.update_profile', ['user' => $user]);
             });
-            Route::put('/', [UserController::class, 'update']);
+            Route::post('/', [UserController::class, 'update']);
         });
 
     });

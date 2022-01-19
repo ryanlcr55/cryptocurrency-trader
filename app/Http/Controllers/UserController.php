@@ -10,9 +10,19 @@ class UserController extends BaseController
 {
     public function update(UpdateRequest $request)
     {
-        $user = Auth::user();
-        $user->update($request->validate());
+        try {
+            $user = Auth::user();
+            $attributes = collect($request->all())
+                ->filter(function ($row) {
+                    return ($row);
+                })
+                ->toArray();
+            $user->update($attributes);
+            
+            return redirect('user/profile');
+        } catch (\Exception $e) { 
 
-        return response();
-    }
+            return back()->withErrors($e->getMessage);
+        } 
+      }
 }

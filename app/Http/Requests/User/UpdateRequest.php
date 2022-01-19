@@ -14,6 +14,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => 'bail|string',
             'username' => 'bail|string',
             'password' => 'bail|string',
             'api_key' => 'bail|string',
