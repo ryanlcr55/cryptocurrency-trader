@@ -19,7 +19,7 @@ class CreateUser extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Command create user';
 
     /**
      * Create a new command instance.
@@ -38,17 +38,19 @@ class CreateUser extends Command
      */
     public function handle(User $userModel)
     {
-        $user = $userModel::create(
-            [
-                'name' => $this->argument('name'),
-                'username' => $this->argument('username'),
-                'password' => $this->argument('password'),
-                'exchange_api_token' => $this->argument('api_key')
-                ]
-        );
-        $user = $user->refresh();
-
-        print_r($user->toArray());
+        try {
+            $user = $userModel::create(
+                [
+                    'name' => $this->argument('name'),
+                    'username' => $this->argument('username'),
+                    'password' => $this->argument('password'),
+                    'exchange_api_token' => $this->argument('api_key')
+                    ]
+            );
+            $user = $user->refresh();
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
         return 0;
     }
 }
