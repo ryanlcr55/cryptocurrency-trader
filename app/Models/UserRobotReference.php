@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserRobot extends Model
+class UserRobotReference extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -14,9 +14,12 @@ class UserRobot extends Model
      */
     protected $fillable = [
         'name',
+        'user_id',
         'signal_id',
-        'amount',
-        'limit',
-        'stop',
+        'exchange',
+        'base_coin_code',
+        'unit_percent',
+        'limit_percent',
+        'stop_percent',
     ];
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserRobotsTable extends Migration
+class CreateUserRobotReferencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUserRobotsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_robots', function (Blueprint $table) {
+        Schema::create('user_robot_references', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->foreignId('user_id')
@@ -22,9 +22,11 @@ class CreateUserRobotsTable extends Migration
                 ->restrictOnDelete();
             $table->unsignedBigInteger('signal_id')->index();
             $table->unique(['user_id', 'signal_id']);
-            $table->unsignedInteger('amount');
-            $table->unsignedInteger('limit');
-            $table->unsignedInteger('stop');
+            $table->string('base_coin_code', 16)->default('usdt');
+            $table->enum('exchange', ['binance'])->default('binance');
+            $table->unsignedInteger('unit_percent');
+            $table->unsignedInteger('limit_percent');
+            $table->unsignedInteger('stop_percent');
             $table->timestamps();
         });
     }
@@ -36,6 +38,6 @@ class CreateUserRobotsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_robots');
+        Schema::dropIfExists('user_robot_references');
     }
 }
