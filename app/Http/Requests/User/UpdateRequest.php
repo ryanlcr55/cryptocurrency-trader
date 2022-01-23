@@ -17,7 +17,8 @@ class UpdateRequest extends FormRequest
             'name' => 'bail|string',
             'username' => 'bail|string',
             'password' => 'bail|string',
-            'api_key' => 'bail|string',
+            'exchange_api_key' => 'bail|string',
+            'exchange_secret_key' => 'bail|string',
         ];
     }
 }

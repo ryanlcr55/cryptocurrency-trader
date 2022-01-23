@@ -12,7 +12,7 @@ class CreateUser extends Command
      *
      * @var string
      */
-    protected $signature = 'command:createUser {name} {username} {password} {api_key?}';
+    protected $signature = 'command:createUser {name} {username} {password} {api_key?} {secret_key?}';
 
     /**
      * The console command description.
@@ -44,7 +44,8 @@ class CreateUser extends Command
                     'name' => $this->argument('name'),
                     'username' => $this->argument('username'),
                     'password' => $this->argument('password'),
-                    'exchange_api_token' => $this->argument('api_key')
+                    'exchange_api_key' => $this->argument('api_key'),
+                    'exchange_secret_key' => $this->argument('secret_key'),
                     ]
             );
             $this->info('ok');
