@@ -11,12 +11,11 @@ class UserRunningRobotHistory extends Model
 
     public $fillable = [
         'user_id',
-        'user_robot_reference_id',
+        'signal_id',
         'robot_uid',
         'exchange',
         'base_coin_code',
         'target_coin_code',
-        'type',
         'amount',
         'starting_price',
         'ending_price',

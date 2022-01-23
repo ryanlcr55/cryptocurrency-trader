@@ -16,12 +16,11 @@ class CreateUserRunningRobotHistoriesTable extends Migration
         Schema::create('user_running_robot_histories', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id')->index();
-            $table->unsignedInteger('user_robot_reference_id')->index();  
+            $table->unsignedInteger('signal_id')->index();  
             $table->string('robot_uid')->unique();
             $table->string('exchange', 16);
             $table->string('base_coin_code', 16);
             $table->string('target_coin_code', 16);
-            $table->enum('type', ['long', 'sort']);
             $table->unsignedDecimal('amount', 28, 18);
             $table->unsignedDecimal('starting_price', 28, 18);
             $table->unsignedDecimal('ending_price', 28, 18);

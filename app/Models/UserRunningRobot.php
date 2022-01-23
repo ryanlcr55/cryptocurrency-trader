@@ -11,14 +11,14 @@ class UserRunningRobot extends Model
 
     public $fillable = [
         'user_id',
-        'user_robot_reference_id',
+        'signal_id',
         'robot_uid',
         'exchange',
         'coin_code',
         'base_coin_code',
-        'type',
         'amount',
         'starting_price',
         'lower_limit_price',
+        'disabled',
     ];
 }
