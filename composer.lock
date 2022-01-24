@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c61ff82cbf0142a401a48a8161e1595a",
+    "content-hash": "a3a1361c7fc3d7973e946054a7178290",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2192,6 +2192,59 @@
             "time": "2021-12-04T23:24:31+00:00"
         },
         {
+            "name": "pimple/pimple",
+            "version": "v3.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/silexphp/Pimple.git",
+                "reference": "a94b3a4db7fb774b3d78dad2315ddc07629e1bed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a94b3a4db7fb774b3d78dad2315ddc07629e1bed",
+                "reference": "a94b3a4db7fb774b3d78dad2315ddc07629e1bed",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "psr/container": "^1.1 || ^2.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^5.4@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Pimple": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Pimple, a simple Dependency Injection Container",
+            "homepage": "https://pimple.symfony.com",
+            "keywords": [
+                "container",
+                "dependency injection"
+            ],
+            "support": {
+                "source": "https://github.com/silexphp/Pimple/tree/v3.5.0"
+            },
+            "time": "2021-10-28T11:13:42+00:00"
+        },
+        {
             "name": "psr/container",
             "version": "1.1.2",
             "source": {
@@ -2845,6 +2898,78 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "stingbo/easyexchange",
+            "version": "v2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stingbo/easyexchange.git",
+                "reference": "9222b6b368ef2ee8d39de7e92a9a603f7b6df5f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stingbo/easyexchange/zipball/9222b6b368ef2ee8d39de7e92a9a603f7b6df5f6",
+                "reference": "9222b6b368ef2ee8d39de7e92a9a603f7b6df5f6",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2 || ^7.0",
+                "monolog/monolog": "^1.22 || ^2.0",
+                "php": ">=7.2",
+                "pimple/pimple": "^3.0",
+                "workerman/globaldata": "*",
+                "workerman/workerman": "^4.0"
+            },
+            "require-dev": {
+                "dms/phpunit-arraysubset-asserts": "^0.2.0",
+                "mockery/mockery": "^1.2.3",
+                "phpstan/phpstan": "0.12.x-dev",
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "hooks": {
+                    "pre-commit": [
+                        "composer test",
+                        "composer fix-style"
+                    ],
+                    "pre-push": [
+                        "composer test",
+                        "composer fix-style"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EasyExchange\\": "src/"
+                },
+                "files": [
+                    "src/Kernel/Support/Helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "stingbo",
+                    "email": "lianbo.wan@gamil.com"
+                }
+            ],
+            "description": "easy use digital currency exchange sdk",
+            "keywords": [
+                "digital currency exchange",
+                "easyexchange",
+                "sdk",
+                "交易所SDK"
+            ],
+            "support": {
+                "issues": "https://github.com/stingbo/easyexchange/issues",
+                "source": "https://github.com/stingbo/easyexchange/tree/v2.0.4"
+            },
+            "time": "2022-01-19T04:51:02+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5379,6 +5504,103 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
             "time": "2021-03-09T10:59:23+00:00"
+        },
+        {
+            "name": "workerman/globaldata",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/GlobalData.git",
+                "reference": "baf3b7af338f329e88136ebe92266dfe40dd00a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/GlobalData/zipball/baf3b7af338f329e88136ebe92266dfe40dd00a7",
+                "reference": "baf3b7af338f329e88136ebe92266dfe40dd00a7",
+                "shasum": ""
+            },
+            "require": {
+                "workerman/workerman": ">=3.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GlobalData\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.workerman.net",
+            "support": {
+                "issues": "https://github.com/walkor/GlobalData/issues",
+                "source": "https://github.com/walkor/GlobalData/tree/v1.0.3"
+            },
+            "time": "2018-08-16T03:59:34+00:00"
+        },
+        {
+            "name": "workerman/workerman",
+            "version": "v4.0.26",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/workerman.git",
+                "reference": "27573e9f985f9ec0665b1f9924308d359bd0fdaa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/workerman/zipball/27573e9f985f9ec0665b1f9924308d359bd0fdaa",
+                "reference": "27573e9f985f9ec0665b1f9924308d359bd0fdaa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "suggest": {
+                "ext-event": "For better performance. "
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Workerman\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "walkor",
+                    "email": "walkor@workerman.net",
+                    "homepage": "http://www.workerman.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An asynchronous event driven PHP framework for easily building fast, scalable network applications.",
+            "homepage": "http://www.workerman.net",
+            "keywords": [
+                "asynchronous",
+                "event-loop"
+            ],
+            "support": {
+                "email": "walkor@workerman.net",
+                "forum": "http://wenda.workerman.net/",
+                "issues": "https://github.com/walkor/workerman/issues",
+                "source": "https://github.com/walkor/workerman",
+                "wiki": "http://doc.workerman.net/"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/walkor",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/walkor",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-12-21T03:39:14+00:00"
         }
     ],
     "packages-dev": [
