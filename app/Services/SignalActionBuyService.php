@@ -67,7 +67,7 @@ class SignalActionBuyService extends SignalAction
             'user_id' => $user->id,
             'robot_uid' => $robotUid,
             'symbol' => $tradeResponse['symbol'],
-            'action' => 'buy',
+            'action' => UserOrderRecord::ACTION_BUY,
             'exchange_order_id' => $tradeResponse['order_id'],
             'price' => $tradeResponse['price'],
             'cost' => $tradeResponse['cost'],
@@ -88,11 +88,9 @@ class SignalActionBuyService extends SignalAction
                 $tradeResponse['price'],
                 $robotReference->stop_percent
             ),
-            'status' => UserRunningRobot::RUNNING_ROBOT_STATUS_ACTIVED
+            'status' => UserRunningRobot::STATUS_ACTIVED
         ]);
     }
-
-
 
     protected function countCost(float $userBalance, float $unitPrice)
     {

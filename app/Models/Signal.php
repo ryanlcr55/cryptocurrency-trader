@@ -16,7 +16,7 @@ class Signal extends Model
         'name',
     ];
 
-    public function userRobotReference()
+    public function userRobotReferences()
     {
         return $this->hasMany(UserRobotReference::class);
     }

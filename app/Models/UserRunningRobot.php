@@ -9,9 +9,9 @@ class UserRunningRobot extends Model
 {
     use HasFactory;
 
-    const RUNNING_ROBOT_STATUS_INIT = 'init';
-    const RUNNING_ROBOT_STATUS_ACTIVED = 'actived';
-    const RUNNING_ROBOT_STATUS_STOPPED = 'stopped';
+    const STATUS_INIT = 'init';
+    const STATUS_ACTIVED = 'actived';
+    const STATUS_STOPPED = 'stopped';
 
     public $fillable = [
         'user_id',

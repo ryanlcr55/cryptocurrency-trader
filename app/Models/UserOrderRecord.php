@@ -9,6 +9,9 @@ class UserOrderRecord extends Model
 {
     use HasFactory;
 
+    const ACTION_BUY = 'buy';
+    const ACTION_SELL = 'sell';
+
     public $fillable = [
         'user_id',
         'robot_uid',
