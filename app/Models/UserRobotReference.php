@@ -16,7 +16,6 @@ class UserRobotReference extends Model
         'name',
         'user_id',
         'signal_id',
-        'exchange',
         'base_coin_code',
         'unit_percent',
         'limit_percent',

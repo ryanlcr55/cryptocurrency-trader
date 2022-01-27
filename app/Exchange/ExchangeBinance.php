@@ -127,14 +127,32 @@ class ExchangeBinance
         return $response;
     }
 
+    public function getPrice(string $symbol)
+    {
+        return $this->app->market->getPrice(strtoupper($symbol));
+    }
+
     private function formatOrderResponse(array $response)
     {
         return [
+            'symbol' => $response['symbol'],
             'action' => self::SIDE_ARRAY[$response['side']],
             'order_id' => $response['orderId'],
-            'price' => $response['fills']['price'],
+            'price' => bcdiv($response['cummulativeQuoteQty'], $response['executedQty'], 20),
             'cost' => $response['cummulativeQuoteQty'],
-            'quantity' => $response['fills']['qty'],
+            'quantity' => $response['executedQty'],
+            'fee' => $this->sumTotalFills($response['fills']),
+            'order_created_at' => date('Y-m-d H:i:s', $response['transactTime'] / 1000),
         ];
+    }
+
+    private function sumTotalFills(array $fills): string
+    {
+        $totalFills = "0";
+        foreach ($fills as $fill) {
+            $totalFills = bcadd($totalFills, $fill['commission'], 18);
+        }
+
+        return $totalFills;
     }
 }

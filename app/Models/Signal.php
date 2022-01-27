@@ -13,7 +13,12 @@ class Signal extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'detail',
+        'name',
     ];
+
+    public function userRobotReference()
+    {
+        return $this->hasMany(UserRobotReference::class);
+    }
 
 }

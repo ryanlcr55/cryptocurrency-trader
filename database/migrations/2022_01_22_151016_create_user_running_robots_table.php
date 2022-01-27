@@ -17,15 +17,15 @@ class CreateUserRunningRobotsTable extends Migration
             $table->id();
             $table->unsignedInteger('user_id')->index();
             $table->unsignedInteger('signal_id')->index();
-            $table->string('robot_uid')->unique();
-            $table->string('exchange', 16);
-            $table->string('coin_code', 16);
-            $table->string('base_coin_code', 16);
-            $table->unsignedDecimal('amount', 28, 18);
-            $$table->unsignedDecimal('starting_price', 28, 18);
-            $table->unsignedDecimal('upper_limit_price', 28, 18);
-            $table->unsignedDecimal('lower_limit_price', 28, 18);
-            $table->boolean('disabled')->default(false)->index();
+            $table->string('robot_uid')->unique()->comment('機器人流水號');
+            $table->string('coin_code', 16)->comment('購買幣別');
+            $table->string('base_coin_code', 16)->comment('成本幣別');
+            $table->unsignedDecimal('cost', 28, 18)->comment('成本');
+            $table->unsignedDecimal('quantity', 28, 18)->nullable()->comment('購買數量');
+            $table->unsignedDecimal('starting_price', 28, 18)->nullable()->comment('起始價格');
+            $table->unsignedDecimal('upper_limit_price', 28, 18)->nullable()->comment('上限價格');
+            $table->unsignedDecimal('lower_limit_price', 28, 18)->nullable()->comment('下限價格');
+            $table->enum('status', ['init', 'actived', 'stopped'])->default('init')->index();
             $table->timestamps();
         });
     }

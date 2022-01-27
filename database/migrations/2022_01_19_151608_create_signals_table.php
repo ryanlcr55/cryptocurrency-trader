@@ -15,7 +15,7 @@ class CreateSignalsTable extends Migration
     {
         Schema::create('signals', function (Blueprint $table) {
             $table->id();
-            $table->string('detail')->unique();
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }

@@ -12,7 +12,14 @@ class UserOrderRecord extends Model
     public $fillable = [
         'user_id',
         'robot_uid',
-        'exchange',
         'exchange_order_id',
+        'symbol',
+        'action',
+        'exchange_order_id',
+        'price',
+        'cost',
+        'quantity',
+        'fee',
+        'order_created_at',
     ];
 }

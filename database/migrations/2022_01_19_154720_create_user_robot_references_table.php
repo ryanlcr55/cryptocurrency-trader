@@ -22,11 +22,10 @@ class CreateUserRobotReferencesTable extends Migration
                 ->restrictOnDelete();
             $table->unsignedBigInteger('signal_id')->index();
             $table->unique(['user_id', 'signal_id']);
-            $table->string('base_coin_code', 16)->default('usdt');
-            $table->enum('exchange', ['binance'])->default('binance');
-            $table->unsignedInteger('unit_percent');
-            $table->unsignedInteger('limit_percent');
-            $table->unsignedInteger('stop_percent');
+            $table->string('base_coin_code', 16)->default('usdt')->comment('成本幣別');
+            $table->unsignedInteger('unit_percent')->comment('每次購買成本百分比');
+            $table->unsignedInteger('limit_percent')->comment('止營百分比');
+            $table->unsignedInteger('stop_percent')->comment('止損百分比');
             $table->timestamps();
         });
     }
