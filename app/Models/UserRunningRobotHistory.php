@@ -15,7 +15,7 @@ class UserRunningRobotHistory extends Model
         'robot_uid',
         'base_coin_code',
         'coin_code',
-        'amount',
+        'base_cost',
         'starting_price',
         'ending_price',
         'profit',

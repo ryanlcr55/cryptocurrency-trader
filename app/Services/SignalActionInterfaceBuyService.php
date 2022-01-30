@@ -80,7 +80,7 @@ class SignalActionInterfaceBuyService implements SignalActionInterface
             'price' => $tradeResponse['price'],
             'cost' => $tradeResponse['cost'],
             'quantity' => $tradeResponse['quantity'],
-            'fee' => $tradeResponse['fee'],
+            'fee' => bcmul($tradeResponse['fee'], $tradeResponse['price'], 18),
             'order_created_at' => $tradeResponse['order_created_at'],
         ]);
 
