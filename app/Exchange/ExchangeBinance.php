@@ -102,19 +102,19 @@ class ExchangeBinance
         }
     }
 
-    public function getCoinBalance(string $coin): string
+    public function getCoinBalance(string $coin)
     {
-        $allCoins = $this->app->wallet->getAll();
+        $responses = $this->app->wallet->getAll();
 
-        foreach ($allCoins as $coin) {
-            if ($coin['coin'] === strtoupper($coin)) {
-                return $coin['free'];
+        foreach ($responses as $responseCoin) {
+            if ($responseCoin['coin'] === strtoupper($coin)) {
+                return $responseCoin['free'];
             }
         }
 
         return '0';
     }
-    
+
     public function getOrders(string $symbol, int $limit = 10)
     {
         $params = [
