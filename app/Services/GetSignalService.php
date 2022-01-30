@@ -14,7 +14,7 @@ class GetSignalService
         $this->signalModel = $signalModel;
     }
 
-    public function exec(array $receivedSignal, SignalAction $actionService)
+    public function exec(array $receivedSignal, SignalActionInterface $actionService)
     {
         $signal = $this->getSignal($receivedSignal['name']);
         if (!$signal || $signal->userRobotReference) {

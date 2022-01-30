@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class SignalActionBuyService extends SignalAction
+class SignalActionInterfaceBuyService implements SignalActionInterface
 {
     public function __construct(
         protected User $userModel,
@@ -61,8 +61,16 @@ class SignalActionBuyService extends SignalAction
             );
             DB::commit();
         } catch (\Exception $e) {
-            Log::error('Failed to exec buyAction, signal_id: '.$robotReference->signal_id.', user_id: '.$robotReference->user_id);
+            DB::rollBack();
+            Log::error('Failed to exec buyAction', [
+                'user_id' => $robotReference->user_id,
+                'signal_id' => $robotReference->signal_id,
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ]);
+            return;
         }
+
         $this->userOrderRecordModel->create([
             'user_id' => $user->id,
             'robot_uid' => $robotUid,
@@ -90,6 +98,17 @@ class SignalActionBuyService extends SignalAction
             ),
             'status' => UserRunningRobot::STATUS_ACTIVED
         ]);
+    }
+
+    protected function checkExistedRunningRobot(int $userId, int $signalId, string $coinCode, string $baseCoinCode)
+    {
+        return $this->userRunningRobotModel
+            ->where('user_id', '=', $userId)
+            ->where('signal_id', '=', $signalId)
+            ->where('status', '!=', UserRunningRobot::STATUS_STOPPED)
+            ->where('coin_code', '=', $coinCode)
+            ->where('base_coin_code', '=', $baseCoinCode)
+            ->exists();
     }
 
     protected function countCost(float $userBalance, float $unitPrice)
