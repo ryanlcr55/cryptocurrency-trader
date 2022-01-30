@@ -26,11 +26,11 @@ class ExchangeBinance
         return $this->app->user->getBnbBurnStatus();
     }
 
-    protected function getApp()
+    protected function getApp($apiKey, $secretKey)
     {
         $binanceConfig = config('exchange_config.binance');
-        $binanceConfig['app_key'] = $this->apiKey;
-        $binanceConfig['secret'] = $this->secretKey;
+        $binanceConfig['app_key'] = $apiKey;
+        $binanceConfig['secret'] = $secretKey;
         return Factory::binance($binanceConfig);
     }
 
