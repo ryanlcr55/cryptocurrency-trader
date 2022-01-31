@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class SignalActionInterfaceBuyService implements SignalActionInterface
+class BuySignalService implements SignalActionInterface
 {
     public function __construct(
         protected User $userModel,

@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\SignalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('user', function () {
 });
+
+Route::post('signal', [SignalController::class, 'receivedSignal']);

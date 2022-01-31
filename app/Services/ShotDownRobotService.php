@@ -5,14 +5,13 @@ namespace App\Services;
 use App\Exchange\ExchangeBinance;
 use App\Models\User;
 use App\Models\UserOrderRecord;
-use App\Models\UserRobotReference;
 use App\Models\UserRunningRobot;
 use App\Models\UserRunningRobotHistory;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class SignalActionInterfaceSellService implements SignalActionInterface
+class ShotDownRobotService
 {
     public function __construct(
         protected User $userModel,
@@ -22,24 +21,18 @@ class SignalActionInterfaceSellService implements SignalActionInterface
     ) {
     }
 
-    public function exec(UserRobotReference $robotReference, string $coinCode)
+    public function exec(UserRunningRobot $runningRobot)
     {
-        $symbol = strtoupper($coinCode . $robotReference->base_coin_code);
-
-
-        $user = $this->userModel->find($robotReference->user_id);
+        $user = $this->userModel->find($runningRobot->user_id);
         if (!$user->exchange_api_key || !$user->exchange_secret_key) {
             throw new Exception('User api key is not available');
         }
 
         try {
             DB::beginTransaction();
-            $runningRobot = $this->getRunningRobot(
-                $robotReference->user_id,
-                $robotReference->signal_id,
-                $coinCode,
-                $robotReference->base_coin_code
-            );
+            $runningRobot = $this->userRunningRobotModel
+                ->lockForUpdate()
+                ->find($runningRobot->id);
 
             if (!$runningRobot) {
                 DB::rollBack();
@@ -52,12 +45,19 @@ class SignalActionInterfaceSellService implements SignalActionInterface
             ]);
 
             $tradeResponse = $exchange->sellingTrade(
-                $symbol,
+                $runningRobot->coin_code . $runningRobot->base_coin_codebol,
                 (string) $runningRobot->quantity
             );
             DB::commit();
         } catch (\Exception $e) {
-            Log::error('Failed to exec buyAction, signal_id: ' . $robotReference->signal_id . ', user_id: ' . $robotReference->user_id);
+            Log::error('Failed to exec shutdown robot', [
+                'user_id' => $runningRobot->user_id,
+                'signal_id' => $runningRobot->signal_id,
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ]);
+
+            Log::error('Failed to exec buyAction, signal_id: ' . $runningRobot->signal_id . ', user_id: ' . $robotReference->user_id);
         }
         $this->userOrderRecordModel->create([
             'user_id' => $user->id,
@@ -86,17 +86,5 @@ class SignalActionInterfaceSellService implements SignalActionInterface
             'ending_at' => $tradeResponse['order_created_at'],
         ]);
         $runningRobot->delete();
-    }
-
-    protected function getRunningRobot(int $userId, int $signalId, string $coinCode, string $baseCoinCode)
-    {
-        return $this->userRunningRobotModel
-            ->where('user_id', '=', $userId)
-            ->where('signal_id', '=', $signalId)
-            ->where('status', '=', UserRunningRobot::STATUS_ACTIVED)
-            ->where('coin_code', '=', $coinCode)
-            ->where('base_coin_code', '=', $baseCoinCode)
-            ->lockForUpdate()
-            ->first();
     }
 }

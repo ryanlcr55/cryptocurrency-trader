@@ -14,22 +14,22 @@ class GetSignalService
         $this->signalModel = $signalModel;
     }
 
-    public function exec(array $receivedSignal, SignalActionInterface $actionService)
+    public function exec(string $signalName, string $coin, SignalActionInterface $actionService)
     {
-        $signal = $this->getSignal($receivedSignal['name']);
+        $signal = $this->getSignal($signalName);
         if (!$signal || $signal->userRobotReference) {
             return;
         }
 
-        $signal->userRobotReference->map(function ($reference) use ($actionService) {
-            $actionService->exec($reference, $receivedSignal['coin']);
+        $signal->userRobotReference->map(function ($reference) use ($actionService, $coin) {
+            $actionService->exec($reference, $coin);
         });
     }
 
-    public function getSignal($name)
+    public function getSignal($signalName)
     {
         return $this->signalModel
-            ->where('name', '=', $name)
+            ->where('name', '=', $signalName)
             ->with('userRobotReferences')
             ->first();
     }
