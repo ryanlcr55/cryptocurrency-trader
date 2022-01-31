@@ -22,6 +22,7 @@ class UserRunningRobot extends Model
         'cost',
         'quantity',
         'starting_price',
+        'upper_limit_price',
         'lower_limit_price',
         'disabled',
     ];
