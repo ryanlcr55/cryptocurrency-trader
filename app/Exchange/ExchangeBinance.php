@@ -129,7 +129,15 @@ class ExchangeBinance
 
     public function getPrice(string $symbol)
     {
-        return $this->app->market->getPrice(strtoupper($symbol));
+        try {
+            $response = $this->app->market->price(strtoupper($symbol));
+            return $response['price'];
+        } catch (\Exception $e) {
+            Log::Critical('Binance get price fail', [
+                'symbol' => strtoupper($symbol),
+                'msg' => $e->getMessage(),
+            ]);
+        }
     }
 
     private function formatOrderResponse(array $response)
