@@ -50,7 +50,7 @@ class RunRobot extends Command
     ) {
         $this->runningRobotModel = $runningRobotModel;
         $this->getRunningRobot()->each(function ($runningRobot) use ($exchange, $shotDownRobotService) {
-            $price = $exchange->getPrice($runningRobot->coin_code . $runningRobot->base_coin_code);
+            $price = (float) $exchange->getPrice($runningRobot->coin_code . $runningRobot->base_coin_code);
             if ($price >= $runningRobot->upper_limit_price || $price <= $runningRobot->lowwer_limit_price) {
                 $shotDownRobotService->exec($runningRobot);
             }
