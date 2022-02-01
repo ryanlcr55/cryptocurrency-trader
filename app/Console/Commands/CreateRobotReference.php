@@ -12,7 +12,7 @@ class CreateRobotReference extends Command
      *
      * @var string
      */
-    protected $signature = 'command:robotReference {user_id} {signal_id} {unit_percent} {limit_percent} {stop_percent}';
+    protected $signature = 'command:createRobotReference {user_id} {signal_id} {unit_percent} {limit_percent} {stop_percent}';
 
     /**
      * The console command description.

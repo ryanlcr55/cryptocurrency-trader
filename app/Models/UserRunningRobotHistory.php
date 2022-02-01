@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserRunningRobotHistory extends Model
 {
-    use HasFactory;
+    public $timestamps = false;
 
     public $fillable = [
         'user_id',
@@ -19,6 +19,8 @@ class UserRunningRobotHistory extends Model
         'starting_price',
         'ending_price',
         'profit',
+        'quantity',
+        'fee',
         'creating_at',
         'ending_at',
     ];

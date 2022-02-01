@@ -25,9 +25,9 @@ class CreateUserRunningRobotHistoriesTable extends Migration
             $table->unsignedDecimal('starting_price', 28, 18)->comment('起始價格');
             $table->unsignedDecimal('ending_price', 28, 18)->comment('結束價格');
             $table->unsignedDecimal('fee', 28, 18)->comment('手續費');
-            $table->determines('profit', 28, 18)->comment('利潤');
-            $table->timestamps('creating_at');
-            $table->timestamps('ending_at');
+            $table->decimal('profit', 28, 18)->comment('利潤');
+            $table->dateTime('creating_at');
+            $table->dateTime('ending_at');
         });
     }
 

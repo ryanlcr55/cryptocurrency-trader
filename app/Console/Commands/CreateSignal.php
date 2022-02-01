@@ -12,7 +12,7 @@ class CreateSignal extends Command
      *
      * @var string
      */
-    protected $signature = 'command:createSignal {detail}';
+    protected $signature = 'command:createSignal {name}';
 
     /**
      * The console command description.
@@ -40,7 +40,7 @@ class CreateSignal extends Command
     {
         try {
             $model::create([
-                'detail' => $this->argument('detail'),
+                'name' => $this->argument('name'),
             ]);
             $this->info('ok');
         } catch (\Exception $e) {

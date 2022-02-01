@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use App\Models\Signal;
 use Illuminate\Console\Command;
 
-class GetSignal extends Command
+class GetSignals extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:getSignal';
+    protected $signature = 'command:getSignals';
 
     /**
      * The console command description.
@@ -41,7 +41,7 @@ class GetSignal extends Command
         $signals = $model::get();
         $this->line('Signal list:');
         $signals->map(function ($signal) {
-            echo 'id: ' . $signal->id . ', detail: ' . $signal->detail . PHP_EOL;
+            echo 'id: ' . $signal->id . ', name: ' . $signal->name . PHP_EOL;
         });
 
 

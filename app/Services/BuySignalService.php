@@ -23,7 +23,7 @@ class BuySignalService implements SignalActionInterface
 
     public function exec(UserRobotReference $robotReference, string $coinCode)
     {
-        $symbol = strtoupper($coinCode.$robotReference->base_coin_code);
+        $symbol = strtoupper($coinCode . $robotReference->base_coin_code);
         if ($this->checkExistedRunningRobot(
             $robotReference->user_id,
             $robotReference->signal_id,
@@ -43,9 +43,9 @@ class BuySignalService implements SignalActionInterface
             $exchange = new ExchangeBinance($user->exchange_api_key, $user->exchange_secret_key);
             $cost = $this->countCost(
                 $exchange->getCoinBalance($robotReference->base_coin_code),
-                $robotReference->uint_percent
+                $robotReference->unit_percent
             );
-            $robotUid = Str::orderedUuid();
+            $robotUid = Str::orderedUuid()->toString();
 
             $robot = $this->userRunningRobotModel->create([
                 'user_id' => $user->id,
@@ -88,6 +88,7 @@ class BuySignalService implements SignalActionInterface
             'cost' => $tradeResponse['cost'],
             'quantity' => $tradeResponse['quantity'],
             'starting_price' => $tradeResponse['price'],
+            'status' => UserRunningRobot::STATUS_ACTIVED,
             'upper_limit_price' => $this->countLimitPrice(
                 $tradeResponse['price'],
                 $robotReference->limit_percent
@@ -96,7 +97,6 @@ class BuySignalService implements SignalActionInterface
                 $tradeResponse['price'],
                 $robotReference->stop_percent
             ),
-            'status' => UserRunningRobot::STATUS_ACTIVED
         ]);
     }
 
@@ -113,16 +113,16 @@ class BuySignalService implements SignalActionInterface
 
     protected function countCost(float $userBalance, float $unitPrice)
     {
-        return bcmul($userBalance, bcdiv($unitPrice, 100));
+        return bcmul($userBalance, bcdiv($unitPrice, 100, 18), 8);
     }
 
     protected function countLimitPrice(float $currentPrice, float $limitPercent)
     {
-        return bcadd($currentPrice, bcmul($currentPrice, bcdiv($limitPercent, 100, 18), 18), 18);
+        return bcadd($currentPrice, bcmul($currentPrice, bcdiv($limitPercent, 100, 18), 18), 8);
     }
 
     protected function countStopPrice(float $currentPrice, float $stopPercent)
     {
-        return bcsub($currentPrice, bcmul($currentPrice, bcdiv($stopPercent, 100, 18), 18), 18);
+        return bcsub($currentPrice, bcmul($currentPrice, bcdiv($stopPercent, 100, 18), 18), 8);
     }
 }

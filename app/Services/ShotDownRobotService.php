@@ -45,8 +45,8 @@ class ShotDownRobotService
             ]);
 
             $tradeResponse = $exchange->sellingTrade(
-                $runningRobot->coin_code . $runningRobot->base_coin_codebol,
-                (string) $runningRobot->quantity
+                $runningRobot->coin_code. $runningRobot->base_coin_code,
+                number_format($runningRobot->quantity, 8)
             );
             DB::commit();
         } catch (\Exception $e) {
@@ -56,8 +56,7 @@ class ShotDownRobotService
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage(),
             ]);
-
-            Log::error('Failed to exec buyAction, signal_id: ' . $runningRobot->signal_id . ', user_id: ' . $robotReference->user_id);
+            return;
         }
         $this->userOrderRecordModel->create([
             'user_id' => $user->id,
@@ -81,7 +80,9 @@ class ShotDownRobotService
             'base_cost' => $runningRobot->cost,
             'starting_price' => $runningRobot->starting_price,
             'ending_price' => $tradeResponse['price'],
-            'profit' => $tradeResponse['cost'] - $runningRobot->cost,
+            'profit' => bcsub($tradeResponse['cost'], $runningRobot->cost, 18),
+            'quantity' => $runningRobot->quantity,
+            'fee' =>  bcadd($runningRobot->fee, $tradeResponse['fee'], 18),
             'creating_at' => $runningRobot->created_at,
             'ending_at' => $tradeResponse['order_created_at'],
         ]);

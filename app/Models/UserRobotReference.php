@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UserRobotReference extends Model
@@ -21,11 +20,4 @@ class UserRobotReference extends Model
         'limit_percent',
         'stop_percent',
     ];
-
-    public function runningRobot($coinCode)
-    {
-        return $this->hasMany(UserRunningRobot::class)
-            ->where('status', '=', UserRunningRobot::STATUS_ACTIVED)
-            ->where('coin_code', '=', $coinCode);
-    }
 }

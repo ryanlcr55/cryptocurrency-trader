@@ -24,6 +24,11 @@ class UserRunningRobot extends Model
         'starting_price',
         'upper_limit_price',
         'lower_limit_price',
-        'disabled',
+        'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

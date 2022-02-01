@@ -59,12 +59,12 @@ class User extends Authenticatable
 
     public function getExchangeApiKeyAttribute($value)
     {
-        return $value ? Crypt::decode($value) : null;
+        return $value ? Crypt::decrypt($value) : null;
     }
 
     public function getExchangeSecretKeyAttribute($value)
     {
-        return $value ? Crypt::decode($value) : null;
+        return $value ? Crypt::decrypt($value) : null;
     }
 
     public function setPasswordAttribute(string $value)

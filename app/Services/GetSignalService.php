@@ -21,7 +21,7 @@ class GetSignalService
             return;
         }
 
-        $signal->userRobotReference->map(function ($reference) use ($actionService, $coin) {
+        $signal->userRobotReferences->map(function ($reference) use ($actionService, $coin) {
             $actionService->exec($reference, $coin);
         });
     }

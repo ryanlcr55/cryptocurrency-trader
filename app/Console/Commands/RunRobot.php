@@ -45,11 +45,12 @@ class RunRobot extends Command
      */
     public function handle(
         UserRunningRobot     $runningRobotModel,
-        ExchangeBinance      $exchange,
         ShotDownRobotService $shotDownRobotService
     ) {
         $this->runningRobotModel = $runningRobotModel;
-        $this->getRunningRobot()->each(function ($runningRobot) use ($exchange, $shotDownRobotService) {
+        $this->getRunningRobot()->each(function ($runningRobot) use ($shotDownRobotService) {
+            $user = $runningRobot->user;
+            $exchange = new ExchangeBinance($user->exchange_api_key, $user->exchange_secret_key);
             $price = (float) $exchange->getPrice($runningRobot->coin_code . $runningRobot->base_coin_code);
             if ($price >= $runningRobot->upper_limit_price || $price <= $runningRobot->lowwer_limit_price) {
                 $shotDownRobotService->exec($runningRobot);
