@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Signal;
+use App\Models\User;
 use Illuminate\Console\Command;
 
-class GetSignals extends Command
+class GetUsers extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:getSignals';
+    protected $signature = 'command:getUsers';
 
     /**
      * The console command description.
@@ -36,12 +36,12 @@ class GetSignals extends Command
      *
      * @return int
      */
-    public function handle(Signal $model)
+    public function handle(User $model)
     {
-        $signals = $model::get();
-        $this->line('Signal list:');
-        $signals->each(function ($signal) {
-            echo 'id: ' . $signal->id . ', name: ' . $signal->name . PHP_EOL;
+        $users = $model::get();
+        $this->line('User list:');
+        $users->each(function ($user) {
+            echo 'id: ' . $user->id . ', name: ' . $user->name . ', username: ' . $user->username . PHP_EOL;
         });
 
 
