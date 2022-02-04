@@ -18,11 +18,9 @@ class UserController extends BaseController
                 })
                 ->toArray();
             $user->update($attributes);
-            
             return redirect('user/profile');
-        } catch (\Exception $e) { 
-
-            return back()->withErrors($e->getMessage);
-        } 
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
       }
 }
