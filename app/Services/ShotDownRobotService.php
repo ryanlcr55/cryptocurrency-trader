@@ -25,7 +25,12 @@ class ShotDownRobotService
     {
         $user = $this->userModel->find($runningRobot->user_id);
         if (!$user->exchange_api_key || !$user->exchange_secret_key) {
-            throw new Exception('User api key is not available');
+            Log::error('Failed to exec shutdown robot', [
+                'user_id' => $runningRobot->user_id,
+                'signal_id' => $runningRobot->signal_id,
+                'msg' => 'User api key is not available',
+            ]);
+            return;
         }
 
         try {
