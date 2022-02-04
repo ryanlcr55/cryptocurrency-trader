@@ -40,6 +40,7 @@ Route::prefix('user')->group(function () {
             return view('user.profile', [
                 'name' => $user->name,
                 'username' => $user->username,
+                'exchange_api_key' => $user->exchange_api_key
             ]);    
         }); 
 
