@@ -35,7 +35,12 @@ class BuySignalService implements SignalActionInterface
 
         $user = $this->userModel->find($robotReference->user_id);
         if (!$user->exchange_api_key || !$user->exchange_secret_key) {
-            throw new Exception('User api key is not available');
+            Log::error('Failed to exec buyAction', [
+                'user_id' => $robotReference->user_id,
+                'signal_id' => $robotReference->signal_id,
+                'msg' => 'User api key is not available',
+            ]);
+            return;
         }
 
         try {
