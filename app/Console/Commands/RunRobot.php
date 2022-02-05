@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Exchange\ExchangeBinance;
 use App\Models\UserRunningRobot;
-use App\Services\ShotDownRobotService;
+use App\Services\ShutDownRobotService;
 use Illuminate\Console\Command;
 
 class RunRobot extends Command
@@ -45,7 +45,7 @@ class RunRobot extends Command
      */
     public function handle(
         UserRunningRobot     $runningRobotModel,
-        ShotDownRobotService $shotDownRobotService
+        ShutDownRobotService $shotDownRobotService
     ) {
         $this->runningRobotModel = $runningRobotModel;
         $this->getRunningRobot()->each(function ($runningRobot) use ($shotDownRobotService) {

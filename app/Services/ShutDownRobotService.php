@@ -11,7 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class ShotDownRobotService
+class ShutDownRobotService
 {
     public function __construct(
         protected User $userModel,
