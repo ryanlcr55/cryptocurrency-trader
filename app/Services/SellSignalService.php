@@ -8,8 +8,8 @@ use App\Models\UserRunningRobot;
 class SellSignalService implements SignalActionInterface
 {
     public function __construct(
-        protected ShotDownRobotService $shotDownRobotService,
-        protected UserRunningRobot $userRunningRobotModel,
+        protected ShutDownRobotService $shotDownRobotService,
+        protected UserRunningRobot     $userRunningRobotModel,
     ) {
     }
 
