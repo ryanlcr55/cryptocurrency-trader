@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Exchange\ExchangeBinance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,7 @@ Route::get('/', function () {
 
 Route::prefix('auth')->group(function () {
     Route::post('/authenticate', [AuthController::class, 'authenticate']);
-    Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 });
 
 Route::prefix('user')->group(function () {
@@ -30,19 +31,33 @@ Route::prefix('user')->group(function () {
         if (!Auth::check()) {
             return view('user.login');
         } 
-
-        return redirect('/');
+     return redirect('/user/profile');
     })->name('login');
 
     Route::prefix('profile')->middleware('auth')->group(function () {
         Route::get('/', function() {
             $user = Auth::user();
+            $api_key = $user->exchange_api_key;
+            $secert_key = $user->exchange_secert_key;
+            $model = new ExchangeBinance($api_key, $secert_key);
+           $coin = $model->getBnbBurnStatus();
             return view('user.profile', [
                 'name' => $user->name,
                 'username' => $user->username,
-                'exchange_api_key' => $user->exchange_api_key
+                'exchange_api_key' => $user->exchange_api_key,
+                'coin' => $coin
             ]);    
         }); 
+
+        Route::get('/log', function() {
+            $user = Auth::user();
+            return view('user.log', [
+                'name' => $user->name,
+                'username' => $user->username,
+
+            ]);    
+        }); 
+
 
         Route::prefix('update')->group(function () {
             Route::get('/', function() {

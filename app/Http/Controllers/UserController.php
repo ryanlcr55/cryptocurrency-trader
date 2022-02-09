@@ -18,9 +18,15 @@ class UserController extends BaseController
                 })
                 ->toArray();
             $user->update($attributes);
-            return redirect('user/profile');
-        } catch (\Exception $e) {
-            return back()->withErrors($e->getMessage());
-        }
+            
+            //return redirect('user/profile');
+            Auth::logout();
+
+        echo ("<script>alert('修改成功！請重新登入');location='/user/login'</script>");
+
+        } catch (\Exception $e) { 
+
+            return back()->withErrors($e->getMessage);
+        } 
       }
 }
