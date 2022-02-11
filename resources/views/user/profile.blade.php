@@ -25,6 +25,7 @@
                     <ul class="list-group">
                       <li class="list-group-item">帳號：{{$username}}</li>
                       <li class="list-group-item">api key：<textarea>{{$exchange_api_key}}</textarea></li>
+                      <li class="list-group-item">餘額： {{$coin}}usdt</li>
                       <li class="list-group-item"><a href="/user/profile/log" class="btn">交易紀錄</a></li>
 
                     </ul>

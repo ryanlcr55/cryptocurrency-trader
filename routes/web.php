@@ -38,14 +38,16 @@ Route::prefix('user')->group(function () {
         Route::get('/', function() {
             $user = Auth::user();
             $api_key = $user->exchange_api_key;
-            $secert_key = $user->exchange_secert_key;
-            $model = new ExchangeBinance($api_key, $secert_key);
-           $coin = $model->getBnbBurnStatus();
+            $secret_key = $user->exchange_secret_key;
+            $model = new ExchangeBinance($api_key, $secret_key);
+            $coin = $model->getCoinBalance('ETH');
+            $orders = $model->getOrders('BTCUSDT');
             return view('user.profile', [
                 'name' => $user->name,
                 'username' => $user->username,
                 'exchange_api_key' => $user->exchange_api_key,
-                'coin' => $coin
+                'coin' => $coin,
+                'orders' => $orders
             ]);    
         }); 
 

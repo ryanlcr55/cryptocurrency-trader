@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UpdateRequest;
+use App\Models\UserOrderRecord;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends BaseController
 {
@@ -28,5 +30,15 @@ class UserController extends BaseController
 
             return back()->withErrors($e->getMessage);
         } 
+      }
+
+      public function log(UserOrderRecord $model)
+      {
+        $user = Auth::user();
+        $data = $model::query()
+        ->groupBy('symbol')
+        ->where('user_id', '=' ,$user->id )
+        ->get();
+        dd($data);
       }
 }
