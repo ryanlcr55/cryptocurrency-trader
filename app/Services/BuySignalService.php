@@ -71,7 +71,7 @@ class BuySignalService implements SignalActionInterface
                 $cost
             );
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
             Log::error('Failed to exec buyAction', [
                 'user_id' => $robotReference->user_id,
