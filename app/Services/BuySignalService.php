@@ -50,6 +50,12 @@ class BuySignalService implements SignalActionInterface
                 $exchange->getCoinBalance($robotReference->base_coin_code),
                 $robotReference->unit_percent
             );
+
+            throw_if(
+                $cost < 30,
+                new Exception('Cost less than limit')
+            );
+
             $robotUid = Str::orderedUuid()->toString();
 
             $robot = $this->userRunningRobotModel->create([
