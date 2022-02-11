@@ -14,9 +14,9 @@ class ReceivedSignalRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'bail|require|string',
-            'coin' => 'bail|require|string',
-            'action' => 'bail|require|string|in:buy,sell',
+            'name' => 'bail|required|string',
+            'coin' => 'bail|required|string',
+            'action' => 'bail|required|string|in:buy,sell',
         ];
     }
 }
