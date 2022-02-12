@@ -50,6 +50,12 @@ class BuySignalService implements SignalActionInterface
                 $exchange->getCoinBalance($robotReference->base_coin_code),
                 $robotReference->unit_percent
             );
+
+            throw_if(
+                $cost < 30,
+                new Exception('Cost less than limit')
+            );
+
             $robotUid = Str::orderedUuid()->toString();
 
             $robot = $this->userRunningRobotModel->create([
@@ -65,7 +71,7 @@ class BuySignalService implements SignalActionInterface
                 $cost
             );
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
             Log::error('Failed to exec buyAction', [
                 'user_id' => $robotReference->user_id,
