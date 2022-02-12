@@ -40,23 +40,23 @@ Route::prefix('user')->group(function () {
             $api_key = $user->exchange_api_key;
             $secret_key = $user->exchange_secret_key;
             $model = new ExchangeBinance($api_key, $secret_key);
-            $coin = $model->getCoinBalance('ETH');
-            $orders = $model->getOrders('BTCUSDT');
+            $coin = $model->getCoinBalance('usdt');
             return view('user.profile', [
                 'name' => $user->name,
                 'username' => $user->username,
                 'exchange_api_key' => $user->exchange_api_key,
                 'coin' => $coin,
-                'orders' => $orders
             ]);    
         }); 
 
         Route::get('/log', function() {
             $user = Auth::user();
+            $user_log = new UserController();
+            $orders = $user_log->log();
             return view('user.log', [
                 'name' => $user->name,
                 'username' => $user->username,
-
+                'orders' => $orders
             ]);    
         }); 
 

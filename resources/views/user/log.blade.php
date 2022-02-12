@@ -24,31 +24,21 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">First</th>
-                                                    <th scope="col">Last</th>
-                                                    <th scope="col">Handle</th>
+                                                    <th scope="col">幣別</th>
+                                                    <th scope="col">幣價</th>
+                                                    <th scope="col">動作</th>
+                                                    <th scope="col">時間</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                            @foreach($orders as $time => $val)
                                                 <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
+                                                    <th scope="row">{{$val['symbol']}}</th>
+                                                    <td>{{$val['cummulativeQuoteQty']/$val['origQty']}}</td>
+                                                    <td>{{$val['side']}}</td>
+                                                    <td>{{date('Y-m-d H:i:s',$val['time']/1000)}}</td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Jacob</td>
-                                                    <td>Thornton</td>
-                                                    <td>@fat</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Larry</td>
-                                                    <td>the Bird</td>
-                                                    <td>@twitter</td>
-                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>

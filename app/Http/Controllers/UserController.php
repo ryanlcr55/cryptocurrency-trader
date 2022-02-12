@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\UserOrderRecord;
+use App\Exchange\ExchangeBinance;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,14 +32,31 @@ class UserController extends BaseController
             return back()->withErrors($e->getMessage);
         } 
       }
-
-      public function log(UserOrderRecord $model)
+ 
+      public function log()
       {
         $user = Auth::user();
+        $api_key = $user->exchange_api_key;
+        $secret_key = $user->exchange_secret_key;
+        $model = new UserOrderRecord();
+
         $data = $model::query()
         ->groupBy('symbol')
         ->where('user_id', '=' ,$user->id )
         ->get();
-        dd($data);
+
+        $model = new ExchangeBinance($api_key, $secret_key);
+
+        foreach ($data as $val){
+            $val_arr = json_decode($val);
+            $symbol = $val_arr->symbol;
+            $single_coin_order = $model->getOrders($symbol);
+
+            foreach ($single_coin_order as $val2)
+                 $orders[$val2['time']] = $val2;     
+        }
+        
+        krsort($orders);
+        return $orders;
       }
 }

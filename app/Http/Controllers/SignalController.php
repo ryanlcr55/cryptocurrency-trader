@@ -21,6 +21,6 @@ class SignalController extends BaseController
 
         $getSignalService->exec($attribute['name'], $attribute['coin'], $actionService);
 
-        return 'ok';
+        return true;
     }
 }
