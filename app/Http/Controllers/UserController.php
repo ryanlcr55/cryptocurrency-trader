@@ -21,42 +21,45 @@ class UserController extends BaseController
                 })
                 ->toArray();
             $user->update($attributes);
-            
+
             //return redirect('user/profile');
             Auth::logout();
 
-        echo ("<script>alert('修改成功！請重新登入');location='/user/login'</script>");
-
-        } catch (\Exception $e) { 
+            echo ("<script>alert('修改成功！請重新登入');location='/user/login'</script>");
+        } catch (\Exception $e) {
 
             return back()->withErrors($e->getMessage);
-        } 
-      }
- 
-      public function log()
-      {
+        }
+    }
+
+    public function log()
+    {
         $user = Auth::user();
         $api_key = $user->exchange_api_key;
         $secret_key = $user->exchange_secret_key;
         $model = new UserOrderRecord();
 
         $data = $model::query()
-        ->groupBy('symbol')
-        ->where('user_id', '=' ,$user->id )
-        ->get();
+            ->groupBy('symbol')
+            ->where('user_id', '=', $user->id)
+            ->get();
 
         $model = new ExchangeBinance($api_key, $secret_key);
 
-        foreach ($data as $val){
+        $orders = [];
+
+
+        foreach ($data as $val) {
             $val_arr = json_decode($val);
             $symbol = $val_arr->symbol;
             $single_coin_order = $model->getOrders($symbol);
 
             foreach ($single_coin_order as $val2)
-                 $orders[$val2['time']] = $val2;     
+                $orders[$val2['time']] = $val2;
         }
-        
-        krsort($orders);
-        return $orders;
-      }
+
+            krsort($orders);
+
+            return $orders;
+    }
 }

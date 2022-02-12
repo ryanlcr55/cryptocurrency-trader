@@ -40,6 +40,8 @@ Route::prefix('user')->group(function () {
             $api_key = $user->exchange_api_key;
             $secret_key = $user->exchange_secret_key;
             $model = new ExchangeBinance($api_key, $secret_key);
+            // $result = $model->sellingTrade('BTCUSDT', 0.0004);
+            // dd($result);
             $coin = $model->getCoinBalance('usdt');
             return view('user.profile', [
                 'name' => $user->name,

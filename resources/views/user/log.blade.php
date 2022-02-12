@@ -31,7 +31,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($orders as $time => $val)
+                                                @if(sizeof($orders) > 0)
+                                                @foreach($orders as $time => $val)
                                                 <tr>
                                                     <th scope="row">{{$val['symbol']}}</th>
                                                     <td>{{$val['cummulativeQuoteQty']/$val['origQty']}}</td>
@@ -39,6 +40,7 @@
                                                     <td>{{date('Y-m-d H:i:s',$val['time']/1000)}}</td>
                                                 </tr>
                                                 @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
