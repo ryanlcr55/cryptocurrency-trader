@@ -60,7 +60,7 @@ class BuySignalService implements SignalActionInterface
 
             $robot = $this->userRunningRobotModel->create([
                 'user_id' => $user->id,
-                'signal_id' => $robotReference->id,
+                'signal_id' => $robotReference->signal_id,
                 'robot_uid' => $robotUid,
                 'coin_code' => $coinCode,
                 'base_coin_code' => $robotReference->base_coin_code,
