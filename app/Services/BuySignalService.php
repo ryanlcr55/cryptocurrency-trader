@@ -52,7 +52,7 @@ class BuySignalService implements SignalActionInterface
             );
 
             throw_if(
-                $cost < 30,
+                $cost < config('exchange_config.binance.purchase_lower_bounds.' . strtolower($robotReference->base_coin_code)),
                 new Exception('Cost less than limit')
             );
 
