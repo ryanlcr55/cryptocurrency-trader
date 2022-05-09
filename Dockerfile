@@ -1,7 +1,9 @@
+FROM composer:2 as build
+WORKDIR /app
+COPY . /app
+RUN composer update
+
 FROM php:8-fpm-buster
-
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
 RUN  sed -i 's/deb.debian.org/opensource.nchc.org.tw/g'  /etc/apt/sources.list
 
 RUN apt-get update && \
@@ -19,29 +21,25 @@ RUN apt-get update && \
 
 RUN docker-php-ext-install soap exif pcntl zip pdo_mysql bcmath
 
-RUN pecl install -o -f redis && docker-php-ext-enable redis
-
-# Install composer and add its bin to the PATH.
-RUN curl -s http://getcomposer.org/installer | php && \
-    echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
-    mv composer.phar /usr/local/bin/composer
+COPY --from=build /app /var/www
 
 # Source the bash
 RUN . ~/.bashrc
 
-#--------------------------------------------------------------------------
-# Final Touch
-#--------------------------------------------------------------------------
-
-ADD ./php/local.ini /usr/local/etc/php/conf.d
-
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-
 WORKDIR /var/www
 
-COPY ./php/docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY .docker/php/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chmod 777 -R storage bootstrap/cache
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /
+
+
+USER root
+
+COPY .docker/php/crontab /etc/cron.d
+RUN chmod -R 644 /etc/cron.d
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 9000
