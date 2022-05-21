@@ -1,0 +1,55 @@
+version: '3'
+services:
+    # Web server
+    nginx:
+        image: nginx:mainline
+        restart: unless-stopped
+        ports:
+            - "8089:80"
+        volumes:
+            - app_volum:/var/www
+            - .docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+    #PHP Service
+    app:
+        build: ./
+        restart: unless-stopped
+        tty: true
+        volumes:
+            - app_volum:/var/www
+        networks:
+            - app-network
+        environment:
+            - APP_KEY=
+            - DB_DATABASE=laravel
+            - DB_USERNAME=root
+            - DB_PASSWORD=root
+            - APP_KEY=base64:R/EoI4gi+bpUxkJ/ECP877jrB6TQk73iamJhk96xNTc=
+    db:
+        image: mysql:8.0
+        restart: unless-stopped
+        tty: true
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - 50002:6379
+        environment:
+            MYSQL_DATABASE: laravel
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - db_data:/var/lib/mysql/
+            - .docker/mysql/init:/docker-entrypoint-initdb.d
+        networks:
+            - app-network
+
+#Docker Networks
+networks:
+    app-network:
+        driver: bridge
+
+#Volumes
+volumes:
+    db_data:
+        driver: local
+    app_volum:
+        driver: local
