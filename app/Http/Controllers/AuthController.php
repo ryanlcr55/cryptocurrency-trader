@@ -17,7 +17,6 @@ class AuthController extends BaseController
             'password' => $credentials['password'],
         ])) {
             $request->session()->regenerate();
-
             return redirect()->intended('user/profile');
         }
 

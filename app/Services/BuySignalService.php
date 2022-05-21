@@ -50,11 +50,17 @@ class BuySignalService implements SignalActionInterface
                 $exchange->getCoinBalance($robotReference->base_coin_code),
                 $robotReference->unit_percent
             );
+
+            throw_if(
+                $cost < config('exchange_config.binance.purchase_lower_bounds.' . strtolower($robotReference->base_coin_code)),
+                new Exception('Cost less than limit')
+            );
+
             $robotUid = Str::orderedUuid()->toString();
 
             $robot = $this->userRunningRobotModel->create([
                 'user_id' => $user->id,
-                'signal_id' => $robotReference->id,
+                'signal_id' => $robotReference->signal_id,
                 'robot_uid' => $robotUid,
                 'coin_code' => $coinCode,
                 'base_coin_code' => $robotReference->base_coin_code,
@@ -65,7 +71,7 @@ class BuySignalService implements SignalActionInterface
                 $cost
             );
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
             Log::error('Failed to exec buyAction', [
                 'user_id' => $robotReference->user_id,

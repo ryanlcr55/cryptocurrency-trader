@@ -55,6 +55,7 @@ class ShutDownRobotService
             );
             DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Failed to exec shutdown robot', [
                 'user_id' => $runningRobot->user_id,
                 'signal_id' => $runningRobot->signal_id,

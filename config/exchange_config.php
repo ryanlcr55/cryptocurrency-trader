@@ -25,5 +25,9 @@ return [
             'level' => 'debug',
             'file'  => storage_path('logs/exchange_binance-' . date('Y-m-d') . '.log'),
         ],
+
+        'purchase_lower_bounds' => [
+            'usdt' => env('EXCHANGE_BINANCE_PURCHASE_LOWER_BOUND_USDT', 30),
+        ]
     ],
 ];
