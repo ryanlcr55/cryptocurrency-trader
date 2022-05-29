@@ -7,7 +7,7 @@ services:
         ports:
             - "8089:80"
         volumes:
-            - app_volum:/var/www
+            - .:/var/www
             - .docker/nginx/conf.d/:/etc/nginx/conf.d/
         networks:
             - app-network
@@ -17,7 +17,7 @@ services:
         restart: unless-stopped
         tty: true
         volumes:
-            - app_volum:/var/www
+            - .:/var/www
         networks:
             - app-network
         environment:
@@ -50,6 +50,4 @@ networks:
 #Volumes
 volumes:
     db_data:
-        driver: local
-    app_volum:
         driver: local
