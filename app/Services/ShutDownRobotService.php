@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserOrderRecord;
 use App\Models\UserRunningRobot;
 use App\Models\UserRunningRobotHistory;
+use App\Models\Log as LogModel;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -23,18 +24,14 @@ class ShutDownRobotService
 
     public function exec(UserRunningRobot $runningRobot)
     {
-        $user = $this->userModel->find($runningRobot->user_id);
-        if (!$user->exchange_api_key || !$user->exchange_secret_key) {
-            Log::error('Failed to exec shutdown robot', [
-                'user_id' => $runningRobot->user_id,
-                'signal_id' => $runningRobot->signal_id,
-                'msg' => 'User api key is not available',
-            ]);
-            return;
-        }
-
         try {
             DB::beginTransaction();
+
+            $user = $this->userModel->find($runningRobot->user_id);
+            throw_if(
+                !$user->exchange_api_key || !$user->exchange_secret_key
+                , new Exception('User api key is not available'));
+
             $runningRobot = $this->userRunningRobotModel
                 ->lockForUpdate()
                 ->find($runningRobot->id);
@@ -61,6 +58,13 @@ class ShutDownRobotService
                 'signal_id' => $runningRobot->signal_id,
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage(),
+            ]);
+            LogModel::create([
+                'action' => 'sell',
+                'user_id' => $runningRobot->user_id,
+                'signal_id' => $runningRobot->signal_id,
+                'message' => $e->getMessage(),
+                'date' => now(),
             ]);
             return;
         }

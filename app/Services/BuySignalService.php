@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exchange\ExchangeBinance;
+use App\Models\Log as LogModel;
 use App\Models\User;
 use App\Models\UserOrderRecord;
 use App\Models\UserRobotReference;
@@ -33,18 +34,13 @@ class BuySignalService implements SignalActionInterface
             return;
         }
 
-        $user = $this->userModel->find($robotReference->user_id);
-        if (!$user->exchange_api_key || !$user->exchange_secret_key) {
-            Log::error('Failed to exec buyAction', [
-                'user_id' => $robotReference->user_id,
-                'signal_id' => $robotReference->signal_id,
-                'msg' => 'User api key is not available',
-            ]);
-            return;
-        }
-
         try {
             DB::beginTransaction();
+            $user = $this->userModel->find($robotReference->user_id);
+            throw_if(
+                !$user->exchange_api_key || !$user->exchange_secret_key
+                , new Exception('User api key is not available'));
+
             $exchange = new ExchangeBinance($user->exchange_api_key, $user->exchange_secret_key);
             $cost = $this->countCost(
                 $exchange->getCoinBalance($robotReference->base_coin_code),
@@ -78,6 +74,13 @@ class BuySignalService implements SignalActionInterface
                 'signal_id' => $robotReference->signal_id,
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage(),
+            ]);
+            LogModel::create([
+                'action' => 'buy',
+                'user_id' => $robotReference->user_id,
+                'signal_id' => $robotReference->signal_id,
+                'message' => $e->getMessage(),
+                'date' => now(),
             ]);
             return;
         }
