@@ -43,6 +43,7 @@
                                                 @endif
                                             </tbody>
                                         </table>
+                                        <a href="/user/profile/robot_log" class="btn">機器人交易紀錄</a>
                                     </div>
                                 </div>
                             </div>

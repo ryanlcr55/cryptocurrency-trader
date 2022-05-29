@@ -40,8 +40,7 @@ Route::prefix('user')->group(function () {
             $api_key = $user->exchange_api_key;
             $secret_key = $user->exchange_secret_key;
             $model = new ExchangeBinance($api_key, $secret_key);
-            // $result = $model->sellingTrade('BTCUSDT', 0.0004);
-            // dd($result);
+            //$result = $model->buyingTrade('BTCUSDT', 50);  測試用
             $coin = $model->getCoinBalance('usdt');
             return view('user.profile', [
                 'name' => $user->name,
@@ -61,6 +60,18 @@ Route::prefix('user')->group(function () {
                 'orders' => $orders
             ]);    
         }); 
+
+        Route::get('/robot_log', function() {
+            $user = Auth::user();
+            $user_log = new UserController();
+            $data = $user_log->robotlog();
+            return view('user.robot_log', [
+                'name' => $user->name,
+                'username' => $user->username,
+                'data' => $data
+            ]);    
+        }); 
+
 
 
         Route::prefix('update')->group(function () {

@@ -62,4 +62,25 @@ class UserController extends BaseController
 
             return $orders;
     }
+
+    public function robotlog()
+    {
+        $user = Auth::user();
+        $model = new UserOrderRecord();
+
+        $data = $model::query()
+           ->where('user_id', '=', $user->id)
+           ->get();
+
+        $val_arr = [];
+
+
+        foreach ($data as $val) {
+            $val_arr[] = json_decode($val);
+        }
+        
+            return $val_arr;
+    
+    }
+
 }

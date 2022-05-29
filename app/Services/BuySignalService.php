@@ -51,10 +51,10 @@ class BuySignalService implements SignalActionInterface
                 $robotReference->unit_percent
             );
 
-            // throw_if(
-            //     $cost < config('exchange_config.binance.purchase_lower_bounds.' . strtolower($robotReference->base_coin_code)),
-            //     new Exception('Cost less than limit')
-            // );//這段會出錯
+            throw_if(
+                $cost < config('exchange_config.binance.purchase_lower_bounds.' . strtolower($robotReference->base_coin_code)),
+                new Exception('Cost less than limit')
+            );
 
             $robotUid = Str::orderedUuid()->toString();
 
