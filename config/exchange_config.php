@@ -27,7 +27,7 @@ return [
         ],
 
         'purchase_lower_bounds' => [
-            'usdt' => env('EXCHANGE_BINANCE_PURCHASE_LOWER_BOUND_USDT', 30),
+            'usdt' => env('EXCHANGE_BINANCE_PURCHASE_LOWER_BOUND_USDT', 10),
         ]
     ],
 ];

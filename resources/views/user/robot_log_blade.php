@@ -13,9 +13,9 @@
     <div class="container">
         <div class="row full-height">
             <div class="col-12 text-center align-self-center py-5">
-                <H2>交易紀錄</H2>
+                <H2>機器人交易紀錄</H2>
                 <div class="section pb-5 pt-5 pt-sm-2 text-center">
-                    <div class="card-3d-wrap mx-auto">
+                    <div class="card-3d-wrap mx-auto" style="width:800px!important;">
                         <div class="card-3d-wrapper">
                             <div class="card-front">
                                 <div class="jumbotron jumbotron-fluid">
@@ -25,25 +25,27 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">幣別</th>
-                                                    <th scope="col">幣價</th>
                                                     <th scope="col">動作</th>
-                                                    <th scope="col">時間</th>
+                                                    <th scope="col">價格</th>
+                                                    <th scope="col">數量</th>
+                                                    <th scope="col">下單時間</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if(sizeof($orders) > 0)
-                                                @foreach($orders as $time => $val)
+                                                @if(sizeof($data) > 0)
+                                                @foreach($data as $val)
                                                 <tr>
-                                                    <th scope="row">{{$val['symbol']}}</th>
-                                                    <td>{{$val['cummulativeQuoteQty']/$val['origQty']}}</td>
-                                                    <td>{{$val['side']}}</td>
-                                                    <td>{{date('Y-m-d H:i:s',$val['time']/1000)}}</td>
+                                                    <th scope="row">{{$val->symbol}}</th>
+                                                    <td>{{$val->action}}</td>
+                                                    <td>{{round($val->price, 5)}}</td>
+                                                    <td>{{round($val->quantity, 5)}}</td>
+                                                    <td>{{$val->order_created_at}}</td>
                                                 </tr>
                                                 @endforeach
                                                 @endif
                                             </tbody>
                                         </table>
-                                        <a href="/user/profile/robot_log" class="btn">機器人交易紀錄</a>
+                                        <a href="/user/profile/log" class="btn">交易紀錄</a>
                                     </div>
                                 </div>
                             </div>
