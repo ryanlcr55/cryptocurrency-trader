@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exchange\ExchangeBinance;
+use App\Models\Log as LogModel;
 use App\Models\User;
 use App\Models\UserOrderRecord;
 use App\Models\UserRobotReference;
@@ -33,23 +34,29 @@ class BuySignalService implements SignalActionInterface
             return;
         }
 
-        $user = $this->userModel->find($robotReference->user_id);
-        if (!$user->exchange_api_key || !$user->exchange_secret_key) {
-            throw new Exception('User api key is not available');
-        }
-
         try {
             DB::beginTransaction();
+            $user = $this->userModel->find($robotReference->user_id);
+            throw_if(
+                !$user->exchange_api_key || !$user->exchange_secret_key
+                , new Exception('User api key is not available'));
+
             $exchange = new ExchangeBinance($user->exchange_api_key, $user->exchange_secret_key);
             $cost = $this->countCost(
                 $exchange->getCoinBalance($robotReference->base_coin_code),
                 $robotReference->unit_percent
             );
+
+            throw_if(
+                $cost < config('exchange_config.binance.purchase_lower_bounds.' . strtolower($robotReference->base_coin_code)),
+                new Exception('Cost less than limit')
+            );
+
             $robotUid = Str::orderedUuid()->toString();
 
             $robot = $this->userRunningRobotModel->create([
                 'user_id' => $user->id,
-                'signal_id' => $robotReference->id,
+                'signal_id' => $robotReference->signal_id,
                 'robot_uid' => $robotUid,
                 'coin_code' => $coinCode,
                 'base_coin_code' => $robotReference->base_coin_code,
@@ -60,13 +67,20 @@ class BuySignalService implements SignalActionInterface
                 $cost
             );
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
             Log::error('Failed to exec buyAction', [
                 'user_id' => $robotReference->user_id,
                 'signal_id' => $robotReference->signal_id,
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage(),
+            ]);
+            LogModel::create([
+                'action' => 'buy',
+                'user_id' => $robotReference->user_id,
+                'signal_id' => $robotReference->signal_id,
+                'message' => $e->getMessage(),
+                'date' => now(),
             ]);
             return;
         }
