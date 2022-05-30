@@ -6,7 +6,7 @@ use App\Exchange\ExchangeBinance;
 use App\Models\User;
 use App\Models\UserOrderRecord;
 use App\Models\UserRunningRobot;
-use App\Models\UserRunningRobotHistory;
+use App\Models\UserRunningRobotHistory; 
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -51,7 +51,7 @@ class ShutDownRobotService
 
             $tradeResponse = $exchange->sellingTrade(
                 $runningRobot->coin_code. $runningRobot->base_coin_code,
-                number_format($runningRobot->quantity, 8)
+                sprintf('%.4f', ($runningRobot->quantity-$runningRobot->quantity/100))
             );
             DB::commit();
         } catch (\Exception $e) {
