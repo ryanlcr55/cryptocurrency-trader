@@ -21,7 +21,7 @@ class ShutDownRobotService
     ) {
     }
 
-    public function exec(UserRunningRobot $runningRobot)
+    public function exec(UserRunningRobot $runningRobot, $currentPrice = null)
     {
         $user = $this->userModel->find($runningRobot->user_id);
         if (!$user->exchange_api_key || !$user->exchange_secret_key) {
@@ -49,9 +49,14 @@ class ShutDownRobotService
                 'status' => UserRunningRobot::STATUS_STOPPED,
             ]);
 
+            $sellingQuantity = $this->getSellingQuantity(
+                $runningRobot->quantity,
+                $runningRobot->starting_price,
+                $currentPrice ?? $exchange->getPrice($runningRobot->coin_code . $runningRobot->base_coin_code)
+            );
             $tradeResponse = $exchange->sellingTrade(
                 $runningRobot->coin_code. $runningRobot->base_coin_code,
-                sprintf('%.4f', ($runningRobot->quantity-$runningRobot->quantity/100))
+                number_format($sellingQuantity, 8)
             );
             DB::commit();
         } catch (\Exception $e) {
@@ -93,5 +98,10 @@ class ShutDownRobotService
             'ending_at' => $tradeResponse['order_created_at'],
         ]);
         $runningRobot->delete();
+    }
+
+    protected function getSellingQuantity($quantity, $startPrice, $currentPrice)
+    {
+        return bcmul($quantity, bcdiv($currentPrice, $startPrice), 18);
     }
 }

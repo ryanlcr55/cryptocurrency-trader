@@ -42,10 +42,11 @@ class BuySignalService implements SignalActionInterface
                 , new Exception('User api key is not available'));
 
             $exchange = new ExchangeBinance($user->exchange_api_key, $user->exchange_secret_key);
-            $cost = $this->countCost(
-                $exchange->getCoinBalance($robotReference->base_coin_code),
-                $robotReference->unit_percent
-            );
+//            $cost = $this->countCost(
+//                $exchange->getCoinBalance($robotReference->base_coin_code),
+//                $robotReference->unit_percent
+//            );
+            $cost = $robotReference->unit_percent;
 
             throw_if(
                 $cost < config('exchange_config.binance.purchase_lower_bounds.' . strtolower($robotReference->base_coin_code)),

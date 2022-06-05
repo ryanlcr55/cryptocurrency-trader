@@ -53,7 +53,7 @@ class RunRobot extends Command
             $exchange = new ExchangeBinance($user->exchange_api_key, $user->exchange_secret_key);
             $price = (float) $exchange->getPrice($runningRobot->coin_code . $runningRobot->base_coin_code);
             if ($price >= $runningRobot->upper_limit_price || $price <= $runningRobot->lowwer_limit_price) {
-                $shotDownRobotService->exec($runningRobot);
+                $shotDownRobotService->exec($runningRobot, $price);
             }
         });
 
