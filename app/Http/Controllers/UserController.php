@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\User\RobotRequest;
 use App\Models\UserOrderRecord;
+use App\Models\Signal;
+use App\Models\UserRobotReference;
 use App\Exchange\ExchangeBinance;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class UserController extends BaseController
@@ -58,9 +62,9 @@ class UserController extends BaseController
                 $orders[$val2['time']] = $val2;
         }
 
-            krsort($orders);
+        krsort($orders);
 
-            return $orders;
+        return $orders;
     }
 
     public function robotlog()
@@ -69,8 +73,8 @@ class UserController extends BaseController
         $model = new UserOrderRecord();
 
         $data = $model::query()
-           ->where('user_id', '=', $user->id)
-           ->get();
+            ->where('user_id', '=', $user->id)
+            ->get();
 
         $val_arr = [];
 
@@ -78,9 +82,68 @@ class UserController extends BaseController
         foreach ($data as $val) {
             $val_arr[] = json_decode($val);
         }
-        
-            return $val_arr;
-    
+
+        return $val_arr;
+    }
+
+    public function selectSignal()
+    {
+        $model = new Signal();
+
+        $data = $model::query()
+            ->groupBy('name')
+            ->get();
+
+        $val_arr = [];
+
+
+        foreach ($data as $val) {
+            $val_arr[] = json_decode($val);
+        }
+
+        return $val_arr;
+    }
+
+    public function selectRobot()
+    {
+        $user = Auth::user();
+        $data = DB::table('user_robot_references')
+            ->leftJoin('signals', 'user_robot_references.signal_id', '=', 'signals.id')
+            ->where('user_id', '=', $user->id)
+            ->get();
+
+        return $data;
+    }
+
+    public function updateRobot(RobotRequest $request)
+    {
+        try {
+            $attributes = collect($request->all())
+                ->filter(function ($row) {
+                    return ($row);
+                })
+                ->toArray();
+
+            $model = new UserRobotReference();    
+            $user = Auth::user();
+
+            $model->insert([
+                    'user_id' => $user->id,
+                    'signal_id' => $attributes['signal_id'],
+                    'unit_percent' => $attributes['unit_percent'],
+                    'limit_percent' =>  $attributes['limit_percent'],
+                    'stop_percent' => $attributes['stop_percent'],
+                    'created_at' => date("Y-m-d H:i:s")
+                ]);
+
+            return redirect('user/profile/robot');
+
+        } catch (\Exception $e) {
+
+            echo ("<script>alert('新增失敗');");
+
+            return back()->withErrors($e->getMessage);
+        }
     }
 
 }

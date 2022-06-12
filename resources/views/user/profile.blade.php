@@ -1,5 +1,7 @@
 <link href="/css/profile.css" rel="stylesheet">
 <link href="/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+
 
 <div class="section">
   <nav class="navbar navbar-dark bg-dark">
@@ -26,7 +28,8 @@
                       <li class="list-group-item">帳號：{{$username}}</li>
                       <li class="list-group-item">api key：<textarea>{{$exchange_api_key}}</textarea></li>
                       <li class="list-group-item">餘額： {{$coin}}usdt</li>
-                      <li class="list-group-item"><a href="/user/profile/log" class="btn">交易紀錄</a></li>
+                      <li class="list-group-item"><a href="/user/profile/robot" class="btn" style="margin-right:5px;">機器人列表</a><a href="/user/profile/log" class="btn">交易紀錄</a></li>
+
 
                     </ul>
                   </div>

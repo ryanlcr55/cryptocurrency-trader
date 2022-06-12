@@ -72,7 +72,33 @@ Route::prefix('user')->group(function () {
             ]);    
         }); 
 
+        Route::get('/robot', function() {
+            $user = Auth::user();
+            $user_log = new UserController();
+            $data = $user_log->selectRobot();
+            return view('user.robot', [
+                'name' => $user->name,
+                'username' => $user->username,
+                'data' => $data
+            ]);    
+        }); 
 
+        Route::get('/robot/create', function() {
+            $user = Auth::user();
+            $user_log = new UserController();
+            $data = $user_log->selectSignal();
+            return view('user.robot_create', [
+                'signals' => $data,
+            ]);    
+        }); 
+        
+        Route::prefix('/robot/update')->group(function () {
+            Route::get('/', function() {
+                $user = Auth::user();
+                return view('user.robot', ['user' => $user]);
+            });
+            Route::post('/', [UserController::class, 'updateRobot']);
+        });
 
         Route::prefix('update')->group(function () {
             Route::get('/', function() {
