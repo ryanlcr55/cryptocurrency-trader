@@ -25,4 +25,9 @@ class UserOrderRecord extends Model
         'fee',
         'order_created_at',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
