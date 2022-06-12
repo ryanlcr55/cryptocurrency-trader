@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ShutDownRobotService;
+namespace App\Services;
 
 use App\Events\TradeTriggered;
 use App\Exchange\ExchangeBinance;
