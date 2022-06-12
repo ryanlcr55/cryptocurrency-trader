@@ -50,7 +50,7 @@ class ShutDownRobotService
             ]);
 
             $sellingQuantity = $this->getSellingQuantity(
-                $runningRobot->quantity,
+                $runningRobot->cost,
                 $runningRobot->starting_price,
                 $currentPrice ?? $exchange->getPrice($runningRobot->coin_code . $runningRobot->base_coin_code)
             );
@@ -101,8 +101,8 @@ class ShutDownRobotService
         TradeTriggered::dispatch($record);
     }
 
-    protected function getSellingQuantity($quantity, $startPrice, $currentPrice)
+    protected function getSellingQuantity($cost, $startPrice, $currentPrice)
     {
-        return bcmul($quantity, bcdiv($currentPrice, $startPrice), 18);
+        return bcmul($cost, bcdiv($currentPrice, $startPrice), 18);
     }
 }
