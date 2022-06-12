@@ -81,7 +81,6 @@ class ShutDownRobotService
             'fee' => $tradeResponse['fee'],
             'order_created_at' => $tradeResponse['order_created_at'],
         ]);
-        TradeTriggered::dispatch($record);
 
         $this->userRunningRobotHistoryModel->create([
             'user_id' => $runningRobot->user_id,
@@ -99,6 +98,7 @@ class ShutDownRobotService
             'ending_at' => $tradeResponse['order_created_at'],
         ]);
         $runningRobot->delete();
+        TradeTriggered::dispatch($record);
     }
 
     protected function getSellingQuantity($quantity, $startPrice, $currentPrice)

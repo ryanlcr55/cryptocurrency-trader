@@ -99,7 +99,6 @@ class BuySignalService implements SignalActionInterface
             'fee' => bcmul($tradeResponse['fee'], $tradeResponse['price'], 18),
             'order_created_at' => $tradeResponse['order_created_at'],
         ]);
-        TradeTriggered::dispatch($record);
 
         $robot->update([
             'cost' => $tradeResponse['cost'],
@@ -115,6 +114,7 @@ class BuySignalService implements SignalActionInterface
                 $robotReference->stop_percent
             ),
         ]);
+        TradeTriggered::dispatch($record);
     }
 
     protected function checkExistedRunningRobot(int $userId, int $signalId, string $coinCode, string $baseCoinCode)
