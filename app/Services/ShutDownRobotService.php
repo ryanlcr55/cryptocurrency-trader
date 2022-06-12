@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
+use App\Events\TradeTriggered;
 use App\Exchange\ExchangeBinance;
 use App\Models\User;
 use App\Models\UserOrderRecord;
 use App\Models\UserRunningRobot;
 use App\Models\UserRunningRobotHistory;
-use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -69,7 +69,7 @@ class ShutDownRobotService
             ]);
             return;
         }
-        $this->userOrderRecordModel->create([
+        $record = $this->userOrderRecordModel->create([
             'user_id' => $user->id,
             'robot_uid' => $runningRobot->robot_uid,
             'symbol' => $tradeResponse['symbol'],
@@ -81,6 +81,7 @@ class ShutDownRobotService
             'fee' => $tradeResponse['fee'],
             'order_created_at' => $tradeResponse['order_created_at'],
         ]);
+        TradeTriggered::dispatch($record);
 
         $this->userRunningRobotHistoryModel->create([
             'user_id' => $runningRobot->user_id,

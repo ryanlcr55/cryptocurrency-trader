@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\TradeTriggered;
 use App\Exchange\ExchangeBinance;
 use App\Models\Log as LogModel;
 use App\Models\User;
@@ -86,7 +87,7 @@ class BuySignalService implements SignalActionInterface
             return;
         }
 
-        $this->userOrderRecordModel->create([
+        $record = $this->userOrderRecordModel->create([
             'user_id' => $user->id,
             'robot_uid' => $robotUid,
             'symbol' => $tradeResponse['symbol'],
@@ -98,6 +99,7 @@ class BuySignalService implements SignalActionInterface
             'fee' => bcmul($tradeResponse['fee'], $tradeResponse['price'], 18),
             'order_created_at' => $tradeResponse['order_created_at'],
         ]);
+        TradeTriggered::dispatch($record);
 
         $robot->update([
             'cost' => $tradeResponse['cost'],
