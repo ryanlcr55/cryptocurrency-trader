@@ -30,7 +30,7 @@ class TradeTriggered extends Mailable
     public function build()
     {
         return $this->markdown('emails.trade_triggered', [
-            '$record' => $this->record,
+            'record' => $this->record,
         ]);
     }
 }
