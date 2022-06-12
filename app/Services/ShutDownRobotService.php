@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\ShutDownRobotService;
 
 use App\Events\TradeTriggered;
 use App\Exchange\ExchangeBinance;
@@ -103,6 +103,6 @@ class ShutDownRobotService
 
     protected function getSellingQuantity($quantity, $startPrice, $currentPrice)
     {
-        return bcmul($quantity, bcdiv($currentPrice, $startPrice), 18);
+            return bcmul($quantity, bcdiv($currentPrice, $startPrice, 18), 18);
     }
 }
