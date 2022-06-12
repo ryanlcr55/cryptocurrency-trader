@@ -21,7 +21,7 @@ class ShutDownRobotService
     ) {
     }
 
-    public function exec(UserRunningRobot $runningRobot, $currentPrice = null)
+    public function exec(UserRunningRobot $runningRobot)
     {
         $user = $this->userModel->find($runningRobot->user_id);
         if (!$user->exchange_api_key || !$user->exchange_secret_key) {
@@ -50,9 +50,9 @@ class ShutDownRobotService
             ]);
 
             $sellingQuantity = $this->getSellingQuantity(
-                $runningRobot->cost,
+                $runningRobot->quantity,
                 $runningRobot->starting_price,
-                $currentPrice ?? $exchange->getPrice($runningRobot->coin_code . $runningRobot->base_coin_code)
+                $exchange->getPrice($runningRobot->coin_code . $runningRobot->base_coin_code)
             );
             $tradeResponse = $exchange->sellingTrade(
                 $runningRobot->coin_code. $runningRobot->base_coin_code,
@@ -101,8 +101,8 @@ class ShutDownRobotService
         TradeTriggered::dispatch($record);
     }
 
-    protected function getSellingQuantity($cost, $startPrice, $currentPrice)
+    protected function getSellingQuantity($quantity, $startPrice, $currentPrice)
     {
-        return bcmul($cost, bcdiv($currentPrice, $startPrice), 18);
+        return bcmul($quantity, bcdiv($currentPrice, $startPrice), 18);
     }
 }
