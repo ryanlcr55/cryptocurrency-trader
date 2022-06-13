@@ -88,17 +88,31 @@ class UserController extends BaseController
 
     public function selectSignal()
     {
+        $user = Auth::user();
         $model = new Signal();
-
         $data = $model::query()
             ->groupBy('name')
             ->get();
 
         $val_arr = [];
+        $robot_signal_arr = [];
 
+        $model = new UserRobotReference();  
+
+        $robot_data = $model::query()
+        ->where('user_id', '=', $user->id)
+        ->get();
+
+        foreach ($robot_data as $val){
+            $tmp_val = json_decode($val);
+            $robot_signal_arr[] = $tmp_val->signal_id;
+        }
 
         foreach ($data as $val) {
-            $val_arr[] = json_decode($val);
+            $tmp_val = json_decode($val);
+            if(!in_array($tmp_val->id, $robot_signal_arr)){
+                $val_arr[] = $tmp_val;
+            }
         }
 
         return $val_arr;
